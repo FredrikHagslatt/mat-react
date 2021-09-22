@@ -1,5 +1,5 @@
 import MainContainer from './components/maincontainer';
-  function App() {
+function App() {
     return (
       <MainContainer />
     );
