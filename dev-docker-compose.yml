@@ -1,44 +1,47 @@
 version: "3.7"
 services:
 
-    frontend:
-        build: "${FE_DIR}"
-        image: "${FE_IMAGE}"
-        restart: unless-stopped
-        container_name: "${FE_CONTAINER}"
-        ports:
-            - "3000:3000"
-        networks:
-            - frontnet
-        environment:
-            - REACT_APP_API_URL=${API_CONTAINER}
-        env_file:
-            - .env
-        volumes:
-            - "${LOG_DIR}/mat-front-react:/var/log/mat"
+    #    frontend:
+    #     build: "${FE_DIR}"
+    #    image: "${FE_IMAGE}"
+    #    restart: unless-stopped
+    #    container_name: "${FE_CONTAINER}"
+    #    ports:
+    #        - "3000:3000"
+    #    networks:
+    #        - frontnet
+    #    env_file:
+    #        - .env
+    #    volumes:
+    #        - "${LOG_DIR}/mat-front-react:/var/log/mat"
+
 
     api:
         build: "${API_DIR}"
         image: "${API_IMAGE}"
         restart: unless-stopped
         container_name: "${API_CONTAINER}"
+        ports:
+            - "3001:80"
         networks:
             - frontnet
             - backnet
         env_file:
             - .env
 
+
     database:
         build: "${POSTGRES_DIR}"
         image: "${POSTGRES_IMAGE}"
         restart: unless-stopped
         container_name: "${POSTGRES_CONTAINER}"
-        #        ports:
-        #   - "5432:5432"
+        ports:
+            - "5432:5432"
         networks:
             - backnet
         env_file:
             .env     
+
 
 networks:
     frontnet:

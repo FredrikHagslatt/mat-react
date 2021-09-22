@@ -4,6 +4,8 @@ import Navbar from './navbar';
 import SectionManager from './sectionmanager';
 import Footer from './footer';
 
+
+
 class MainContainer extends Component{
     constructor(props){
         super(props);

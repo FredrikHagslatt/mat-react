@@ -7,7 +7,7 @@ class DBFetcher{
     }
     
     GetDinnerMenu(){
-        return(fetch('/dinnermenu')
+        return(fetch('/api/dinnermenu')
             .then((response) => 
             response.json())
             .then((response) => response.data)
@@ -15,7 +15,7 @@ class DBFetcher{
     }
 
     GetMoreRecipes(){
-        return(fetch('/morerecipes')
+        return(fetch('/api/morerecipes')
             .then((response) => 
             response.json())
             .then((response) => response.data)

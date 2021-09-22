@@ -24,38 +24,30 @@ function GetMoreRecipes(){
   );
 }
 
-
 // App
 const app = express();
-
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
-
-app.get('/BillsHome', (req, res) => {
+app.get('/api/hc', (req, res) => {
   res.json({
-    name: 'Bill',
-    age: 99
+    status: 'Alive',
   })
 })
 
-app.get('/dinnermenu', (req, res) => {
+app.get('/api/dinnermenu', (req, res) => {
   const promise = GetDinnerMenu(); 
   promise.then((value) => {
     res.json({'data': JSON.stringify(value.rows)})
   });
 })
 
-app.get('/morerecipes', (req, res) => {
+app.get('/api/morerecipes', (req, res) => {
   const promise = GetMoreRecipes(); 
   promise.then((value) => {
     res.json({'data': JSON.stringify(value.rows)})
   });
 })
-
 
 const PORT = 80;
 app.listen(PORT, () => console.log('Server is up!!'));
