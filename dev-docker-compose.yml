@@ -22,7 +22,7 @@ services:
         restart: unless-stopped
         container_name: "${API_CONTAINER}"
         ports:
-            - "3001:80"
+            - "3001:3001"
         networks:
             - frontnet
             - backnet

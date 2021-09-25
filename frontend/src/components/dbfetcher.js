@@ -6,6 +6,7 @@ class DBFetcher{
         this.moreRecipes = {};    
     }
     
+
     GetDinnerMenu(){
         return(fetch('/api/dinnermenu')
             .then((response) => 
@@ -13,6 +14,7 @@ class DBFetcher{
             .then((response) => response.data)
         );
     }
+
 
     GetMoreRecipes(){
         return(fetch('/api/morerecipes')
@@ -22,6 +24,23 @@ class DBFetcher{
         );
     }
 
+
+    GetRecipe(id){
+        return(fetch('/api/recipe',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({'id': id}),
+        })
+            .then((response) => 
+            response.json())
+            .then((response) => response.data)
+        );        
+    }
+
+    
     render(){
         return;        
     }
