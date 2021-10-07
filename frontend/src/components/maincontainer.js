@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Navbar from './navbar';
 import SectionManager from './sectionmanager';
 import Footer from './footer';
+
 class MainContainer extends Component{
     constructor(props){
         super(props);
@@ -29,14 +30,11 @@ class MainContainer extends Component{
                         elements={this.state.sections} 
                         active={this.state.activeSection} 
                         onClick={this.NavbarClick}/>
-
                     <SectionManager 
                         active={this.state.activeSection}
                         showImages={this.state.showImages} 
                         widthSwitch={this.state.widthSwitch}/>
-
                     <Footer />
-
             </div>
         );
     };
