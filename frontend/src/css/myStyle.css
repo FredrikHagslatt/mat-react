@@ -14,13 +14,8 @@
 }
 
 .background-image {
-    background-image: linear-gradient(rgba(200, 80, 0, 0.95), rgba(200, 80, 0, 0.95)), url("/src/stat_images/doodle.jpg");
+    background-image: linear-gradient(rgba(200, 80, 0, 0.90), rgba(200, 80, 0, 0.90)), url("/src/stat_images/doodle.jpg");
     background-size: contain;
-
-/*
-    background-color: rgba(255, 131, 0, 0.95);
-    background-color: rgba(255, 100, 0, 0.95);
-*/
 }
 
 .header-wrapper{
@@ -144,6 +139,12 @@ div.desc{
 
 input{
     background-color: rgb(50, 50, 50);
+}
+
+.images-checkbox{
+    display:block;
+    text-align: center;
+    padding-top: 20px;
 }
 
 .footer-wrapper{

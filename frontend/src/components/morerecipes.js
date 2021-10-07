@@ -15,6 +15,12 @@ class MoreRecipes extends Component {
             },
             recipes: [],
         }
+        this.HandleCheckbox = this.HandleCheckbox.bind(this);
+    }
+
+    HandleCheckbox(event){
+        this.setState({showImg: !this.state.showImg});
+        console.log(this.state);
     }
 
     RenderItems(){
@@ -40,9 +46,26 @@ class MoreRecipes extends Component {
     render(){
         const classes = this.state.isMobile ? 'flexbox more-recipes mobile' : 'flexbox more-recipes';
         return(
+            <div>
+
+            <div>
+                
+                <label className="images-checkbox">
+                    <input 
+                        type="checkbox" 
+                        checked={this.state.showImg} 
+                        onChange={this.HandleCheckbox} 
+                    />
+                    Show Images
+                </label>
+
+            </div>
             <div className={classes}>
+
                 {this.RenderItems()}
             </div>
+            </div>
+
         );
     }
 }export default MoreRecipes;
