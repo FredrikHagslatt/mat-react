@@ -5,6 +5,7 @@ function Recipe(props){
         return (
             <a href={props.recipe.url} className="item">
                 <div className="desc">
+                    <h3>{props.day}</h3>
                     <p>{props.recipe.name}</p>
                 </div>
                 <img 

@@ -1,6 +1,6 @@
 import '../css/myStyle.css';
 import React, {Component} from 'react';
-import DinnerMenuRecipe from './dinnermenurecipe';
+import Recipe from './recipe';
 
 class DinnerMenu extends Component {
     constructor(props){
@@ -19,9 +19,9 @@ class DinnerMenu extends Component {
 
     RenderItem(day, recipe){
         if(typeof recipe === 'object'){
-            return <DinnerMenuRecipe day={day} recipe={recipe}/>
+            return <Recipe day={day} recipe={recipe} showImg={true}/>
         }else{
-            return <DinnerMenuRecipe day={day} recipe={this.state.loadingRecipe}/>
+            return <Recipe day={day} recipe={this.state.loadingRecipe} showImg={true}/>
         }
     }
 
