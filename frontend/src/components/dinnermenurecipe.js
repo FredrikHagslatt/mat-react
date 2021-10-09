@@ -1,6 +1,7 @@
 import '../css/myStyle.css';
 
 function DinnerMenuRecipe(props){
+    
     const day = props.day;
     return (
         <a href={props.recipe.url} className="item">

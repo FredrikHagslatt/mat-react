@@ -10,11 +10,6 @@ class SectionManager extends Component {
         this.db = new DBFetcher();
     }
 
-    ClickItem(url){
-        console.log('Triggered!');
-        alert(url);
-    }
-
     GetSection(){
         if(this.props.active === 'Middagsmeny'){
             return<DinnerMenu 

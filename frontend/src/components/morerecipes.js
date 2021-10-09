@@ -20,7 +20,6 @@ class MoreRecipes extends Component {
 
     HandleCheckbox(event){
         this.setState({showImg: !this.state.showImg});
-        console.log(this.state);
     }
 
     RenderItems(){
