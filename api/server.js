@@ -7,7 +7,7 @@ const { Pool } = require('pg');
 const db = new Pool();
 
 function GetDinnerMenu(){
-  const sql = 'SELECT name, queue_pos, url, image FROM recipes WHERE queue_pos < 3 ORDER BY queue_pos';
+  const sql = 'SELECT name, queue_pos, url, image FROM recipes WHERE queue_pos < 3 ORDER BY queue_pos DESC';
   return Promise.resolve(
     db.query(sql)
     .then((result) =>
