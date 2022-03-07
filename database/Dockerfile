@@ -1,9 +1,9 @@
 FROM postgres:12
 COPY sql/ /docker-entrypoint-initdb.d
 
-#RUN mkdir /scripts
-#COPY scripts /scripts
-#RUN chmod -R 755 /scripts
+RUN mkdir /scripts
+COPY scripts /scripts
+RUN chmod -R 755 /scripts
 
 RUN mkdir /conf
 COPY conf/postgresql.conf /conf

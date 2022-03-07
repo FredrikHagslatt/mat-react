@@ -33,12 +33,24 @@ services:
         image: "${POSTGRES_IMAGE}"
         restart: unless-stopped
         container_name: "${POSTGRES_CONTAINER}"
-        #        ports:
-        #   - "5432:5432"
         networks:
             - backnet
         env_file:
             .env     
+        labels:
+            ofelia.enabled: "true"
+            ofelia.job-exec.rotate-dishes.schedule: "0 0 0 * * *" # Run every midnight
+            ofelia.job-exec.rotate-dishes.command: "./scripts/rotate_dishes.sh"
+
+    scheduler:
+        image: mcuadros/ofelia:latest
+        restart: unless-stopped
+        depends_on:
+            - database
+        command: daemon --docker
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+
 
 networks:
     frontnet:
