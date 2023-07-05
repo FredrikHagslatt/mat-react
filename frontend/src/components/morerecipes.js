@@ -1,11 +1,11 @@
 import '../css/myStyle.css';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Recipe from './recipe';
 
 class MoreRecipes extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             isMobile: window.innerWidth < props.widthSwitch,
             showImg: true,
             loadingRecipe: {
@@ -18,23 +18,23 @@ class MoreRecipes extends Component {
         this.HandleCheckbox = this.HandleCheckbox.bind(this);
     }
 
-    HandleCheckbox(event){
-        this.setState({showImg: !this.state.showImg});
+    HandleCheckbox(event) {
+        this.setState({ showImg: !this.state.showImg });
     }
 
-    RenderItems(){
-        return this.state.recipes.map((recipe, key) => 
+    RenderItems() {
+        return this.state.recipes.map((recipe, key) =>
             (typeof recipe === 'object') ?
-                <Recipe key={key} showImg={this.state.showImg} recipe={recipe}/>
-                :<Recipe key={key} showImg={this.state.showImg} recipe={this.state.loadingRecipe}/>
+                <Recipe key={key} showImg={this.state.showImg} recipe={recipe} />
+                : <Recipe key={key} showImg={this.state.showImg} recipe={this.state.loadingRecipe} />
         )
     }
-       
+
     componentDidMount() {
         Promise.resolve(this.props.db.GetMoreRecipes())
-        .then((value) => {
-            this.setState({ recipes: JSON.parse(value) })
-        })
+            .then((value) => {
+                this.setState({ recipes: value })
+            })
         window.addEventListener('resize', () => {
             this.setState({
                 isMobile: window.innerWidth < this.props.widthSwitch
@@ -42,29 +42,29 @@ class MoreRecipes extends Component {
         }, false);
     }
 
-    render(){
+    render() {
         const classes = this.state.isMobile ? 'flexbox more-recipes mobile' : 'flexbox more-recipes';
-        return(
+        return (
             <div>
 
-            <div>
-                
-                <label className="images-checkbox">
-                    <input 
-                        type="checkbox" 
-                        checked={this.state.showImg} 
-                        onChange={this.HandleCheckbox} 
-                    />
-                    Show Images
-                </label>
+                <div>
 
-            </div>
-            <div className={classes}>
+                    <label className="images-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={this.state.showImg}
+                            onChange={this.HandleCheckbox}
+                        />
+                        Show Images
+                    </label>
 
-                {this.RenderItems()}
-            </div>
+                </div>
+                <div className={classes}>
+
+                    {this.RenderItems()}
+                </div>
             </div>
 
         );
     }
-}export default MoreRecipes;
+} export default MoreRecipes;

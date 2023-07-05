@@ -39,7 +39,7 @@ class DinnerMenu extends Component {
         this.SetDays();
         Promise.resolve(this.props.db.GetDinnerMenu())
             .then((value) => {
-                this.setState({ dinnerMenu: JSON.parse(value) })
+                this.setState({ dinnerMenu: value })
             })
 
         window.addEventListener('resize', () => {
