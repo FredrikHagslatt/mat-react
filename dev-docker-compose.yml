@@ -1,47 +1,63 @@
 version: "3.7"
 services:
 
-    #    frontend:
-    #     build: "${FE_DIR}"
-    #    image: "${FE_IMAGE}"
-    #    restart: unless-stopped
-    #    container_name: "${FE_CONTAINER}"
-    #    ports:
-    #        - "3000:3000"
-    #    networks:
-    #        - frontnet
-    #    env_file:
-    #        - .env
-    #    volumes:
-    #        - "${LOG_DIR}/mat-front-react:/var/log/mat"
-
+    frontend:
+        build: 
+            context: "${FE_DIR}"
+            dockerfile: Dockerfile.dev
+        image: "${FE_IMAGE}"
+        restart: unless-stopped
+        container_name: "${FE_CONTAINER}"
+        ports:
+            - "3000:3000"
+        networks:
+            - frontnet
+        environment:
+            - REACT_APP_API_URL=${API_CONTAINER}:3001
+        env_file:
+            - .env
+        volumes:
+            - "${LOG_DIR}/mat-front-react:/var/log/mat"
+            - "./frontend/src/:/app/src"
+            - "./frontend/public/:/app/public"
 
     api:
-        build: "${API_DIR}"
+        build: 
+            context: "${API_DIR}"
+            dockerfile: Dockerfile.dev
         image: "${API_IMAGE}"
         restart: unless-stopped
         container_name: "${API_CONTAINER}"
-        ports:
-            - "3001:3001"
         networks:
             - frontnet
             - backnet
         env_file:
             - .env
-
+        volumes:
+            - ./api/src:/app/src
 
     database:
         build: "${POSTGRES_DIR}"
         image: "${POSTGRES_IMAGE}"
         restart: unless-stopped
         container_name: "${POSTGRES_CONTAINER}"
-        ports:
-            - "5432:5432"
         networks:
             - backnet
         env_file:
-            .env     
+            - .env
+        labels:
+            ofelia.enabled: "true"
+            ofelia.job-exec.rotate-dishes.schedule: "0 0 0 * * *" # Run every midnight
+            ofelia.job-exec.rotate-dishes.command: "./scripts/rotate_dishes.sh"
 
+    scheduler:
+        image: mcuadros/ofelia:latest
+        restart: unless-stopped
+        depends_on:
+            - database
+        command: daemon --docker
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
     frontnet:

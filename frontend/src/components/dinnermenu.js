@@ -1,11 +1,11 @@
 import '../css/myStyle.css';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Recipe from './recipe';
 
 class DinnerMenu extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             isMobile: window.innerWidth < props.widthSwitch,
             loadingRecipe: {
                 'name': 'loading recipe',
@@ -17,30 +17,30 @@ class DinnerMenu extends Component {
         }
     }
 
-    RenderItem(day, recipe){
-        if(typeof recipe === 'object'){
-            return <Recipe day={day} recipe={recipe} showImg={true}/>
-        }else{
-            return <Recipe day={day} recipe={this.state.loadingRecipe} showImg={true}/>
+    RenderItem(day, recipe) {
+        if (typeof recipe === 'object') {
+            return <Recipe day={day} recipe={recipe} showImg={true} />
+        } else {
+            return <Recipe day={day} recipe={this.state.loadingRecipe} showImg={true} />
         }
     }
 
-    SetDays(){
+    SetDays() {
         const week = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
         var today = new Date().getDay();
         var days = [];
-        for(var i = 0; i < 3; i++){
+        for (var i = 0; i < 3; i++) {
             days.push(week[(today + i) % 7]);
         }
-        this.setState({days: days});
+        this.setState({ days: days });
     }
 
     componentDidMount() {
         this.SetDays();
         Promise.resolve(this.props.db.GetDinnerMenu())
-        .then((value) => {
-            this.setState({ dinnerMenu: JSON.parse(value) })
-        })
+            .then((value) => {
+                this.setState({ dinnerMenu: JSON.parse(value) })
+            })
 
         window.addEventListener('resize', () => {
             this.setState({
@@ -49,9 +49,9 @@ class DinnerMenu extends Component {
         }, false);
     }
 
-    render(){
+    render() {
         const classes = this.state.isMobile ? 'flexbox dinner-menu mobile' : 'flexbox dinner-menu';
-        return(
+        return (
             <div className={classes}>
                 {this.RenderItem(this.state.days[0], this.state.dinnerMenu[0])}
                 {this.RenderItem(this.state.days[1], this.state.dinnerMenu[1])}
@@ -61,4 +61,4 @@ class DinnerMenu extends Component {
         );
     }
 
-}export default DinnerMenu;
+} export default DinnerMenu;
