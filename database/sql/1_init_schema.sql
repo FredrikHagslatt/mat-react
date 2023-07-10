@@ -3,10 +3,11 @@ CREATE TABLE recipes (
     created_at          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     name                varchar(64) NOT NULL UNIQUE,
-    url                 varchar(300),
     image               varchar(300) NOT NULL DEFAULT 'no_image_added.jpg',
     queue_pos           int NOT NULL DEFAULT 99,
+    description_type    varchar(16) NOT NULL DEFAULT 'internal',
     description         varchar(1024)
+    url                 varchar(300),
 );
 
 
@@ -46,6 +47,3 @@ ON ingredients FOR EACH ROW EXECUTE PROCEDURE update_updated_at();
 
 CREATE TRIGGER update_association_table_timestamp BEFORE UPDATE
 ON association_table FOR EACH ROW EXECUTE PROCEDURE update_updated_at();
-
-
-
