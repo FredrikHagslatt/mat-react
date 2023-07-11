@@ -1,4 +1,4 @@
-class DBFetcher {
+class DBInterface {
     constructor() {
         this.name = '';
         this.age = 0;
@@ -41,9 +41,7 @@ class DBFetcher {
     }
 
 
-    render() {
-        return;
+    AddRecipe() {
     }
 
-
-} export default DBFetcher;
+} export default DBInterface;

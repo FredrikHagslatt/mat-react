@@ -1,8 +1,8 @@
 import '../css/myStyle.css';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class Password extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             password: '',
@@ -12,8 +12,8 @@ class Password extends Component {
         this.handleLogin = this.handleLogin.bind(this);
     }
 
-    handleLogin(event){
-        this.setState({incorrectGuess: true});
+    handleLogin(event) {
+        this.setState({ incorrectGuess: true });
         alert('Stop this madness!');
     }
 
@@ -21,14 +21,14 @@ class Password extends Component {
         this.setState({ password: event.target.value });
     }
 
-    render (){
-        return(
+    render() {
+        return (
             <label>Admin login
-            <form onSubmit={this.handleLogin}>
-                <input type="password" value={this.state.password} onChange={this.handleChangePassword} />
-                <input type="submit" value="Login" />
-            </form>
+                <form onSubmit={this.handleLogin}>
+                    <input type="password" value={this.state.password} onChange={this.handleChangePassword} />
+                    <input type="submit" value="Login" />
+                </form>
             </label>
         );
     }
-}export default Password;
+} export default Password;
