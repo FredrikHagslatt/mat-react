@@ -3,6 +3,7 @@ import '../css/switch.css';
 
 import React, { useState } from 'react';
 import IngredientForm from './ingredient_form';
+import DBInterface from './db_interface';
 
 const FormInput = ({ value, placeholder, onChange }) => {
     return (
@@ -84,12 +85,20 @@ const RecipeForm = () => {
         setDescription(event.target.value);
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA') {
+            event.preventDefault();
+        }
+    };
+
     const handleSubmit = (event) => {
-        console.log("Name: " + name + ", URL: " + url + ".")
-        console.log("Ingredients" + ingredients + ".")
-        console.log("Description: " + description + ".")
         event.preventDefault();
-        // Perform form submission logic here
+
+        if (type === FormType.External) {
+            DBInterface.addExternalRecipe(name, url);
+        } else {
+            DBInterface.addInternalRecipe(name, description, ingredients);
+        }
     };
 
     return (
@@ -98,6 +107,7 @@ const RecipeForm = () => {
                 placeholder="Name"
                 value={name}
                 onChange={handleNameChange}
+                onKeyDown={handleKeyDown}
             />
 
             <Switch
