@@ -85,29 +85,54 @@ const RecipeForm = () => {
         setDescription(event.target.value);
     };
 
+    /*
+const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+    }
+};
+*/
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA') {
+        const { tagName, type, name } = event.target;
+        if (
+            (event.key === 'Enter' && tagName !== 'TEXTAREA' && type !== 'textarea') ||
+            (event.key === 'Enter' && tagName === 'TEXTAREA' && name === 'description')
+        ) {
             event.preventDefault();
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (type === FormType.External) {
-            DBInterface.addExternalRecipe(name, url);
-        } else {
-            DBInterface.addInternalRecipe(name, description, ingredients);
+        try {
+            if (type === FormType.External) {
+                await DBInterface.addExternalRecipe(name, url);
+            } else {
+                await DBInterface.addInternalRecipe(name, description, ingredients);
+            }
+
+            // Show a success message to the user if the request is successful
+            alert('Recipe added successfully!');
+        } catch (error) {
+            // Handle the error
+            if (error.message === 'Failed to add external recipe') {
+                alert('Error adding external recipe');
+            } else if (error.message === 'Recipe name already exists') {
+                alert('Recipe name already exists. Please choose a different name.');
+            } else {
+                alert('An unknown error occurred');
+            }
+            console.log(error);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
             <FormInput
                 placeholder="Name"
                 value={name}
                 onChange={handleNameChange}
-                onKeyDown={handleKeyDown}
             />
 
             <Switch

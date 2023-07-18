@@ -45,33 +45,52 @@ async function addExternalRecipe(name, url) {
     await db.query(insertRecipeSql, [name, url, 'External']);
     console.log('External recipe added successfully!');
   } catch (error) {
-    console.error('Error adding external recipe:', error);
+    // console.error('Error adding external recipe:', error);
     throw new Error('Failed to add external recipe');
   }
 }
 
 async function addInternalRecipe(name, description, ingredients) {
+  const checkRecipeExistsSql = 'SELECT id FROM recipes WHERE name = $1';
   const insertRecipeSql = 'INSERT INTO recipes (name, description, type) VALUES ($1, $2, $3) RETURNING id';
   const insertAssociationSql = 'INSERT INTO association_table (recipe_id, ingredient_id, quantity, unit) VALUES ($1, $2, $3, $4)';
+  const findIngredientSql = 'SELECT id FROM ingredients WHERE name = $1';
 
   try {
     await query('BEGIN');
-    console.log('Transaction started');
+
+    // Check if the recipe name already exists
+    const existingRecipe = await query(checkRecipeExistsSql, [name]);
+    console.log(existingRecipe.length);
+    if (existingRecipe.length > 0) {
+      throw new Error('Recipe name already exists');
+    }
+
     // Insert the recipe and retrieve the generated ID
     const { id } = (await query(insertRecipeSql, [name, description, 'Internal']))[0];
 
-    console.log('Recipe added with ID:', id);
+
     // Insert the ingredients associated with the recipe
     for (const ingredient of ingredients) {
       const { name, quantity, unit } = ingredient;
-      await query(insertAssociationSql, [id, name, quantity, unit]);
+
+      // Check if the ingredient already exists in the ingredients table
+      const existingIngredient = await query(findIngredientSql, [name]);
+
+      if (existingIngredient.length === 0) {
+        // If the ingredient doesn't exist, insert it into the ingredients table and get its ID
+        const { id: ingredientId } = (await query('INSERT INTO ingredients (name) VALUES ($1) RETURNING id', [name]))[0];
+        await query(insertAssociationSql, [id, ingredientId, quantity, unit]);
+      } else {
+        // If the ingredient already exists, use its ID to insert into the association_table
+        await query(insertAssociationSql, [id, existingIngredient[0].id, quantity, unit]);
+      }
     }
 
     await query('COMMIT');
     console.log('Internal recipe added successfully!');
   } catch (error) {
-    console.error('Error adding internal recipe:', error);
-    throw new Error('Failed to add internal recipe');
+    throw error;
   }
 }
 

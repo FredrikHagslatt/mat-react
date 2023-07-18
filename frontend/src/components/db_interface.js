@@ -54,10 +54,8 @@ class DBInterface {
             }
 
             const data = await response.json();
-            console.log(data); // Success message or other response data
         } catch (error) {
-            console.error('Error adding external recipe:', error);
-            // Handle the error
+            throw error; // Rethrow the error to handle it in the frontend
         }
     }
 
@@ -72,23 +70,19 @@ class DBInterface {
                 body: JSON.stringify({ name, description, ingredients }),
             });
 
-            if (response.ok) {
-                // Recipe added successfully
-                console.log('Internal recipe added successfully!');
-                // Optionally, you can perform additional actions or show a success message to the user
-            } else {
-                // Failed to add recipe
-                console.error('Failed to add internal recipe:', response.statusText);
-                // Optionally, you can handle the error or show an error message to the user
+
+            const data = await response.json();
+            if (!response.ok) {
+                if (data && data.error) {
+                    throw new Error(data.error);
+                }
+                throw new Error('Failed to add internal recipe');
             }
+
         } catch (error) {
-            console.error('Error adding internal recipe:', error);
-            // Optionally, you can handle the error or show an error message to the user
+            throw error; // Rethrow the error to handle it in the frontend
         }
     }
+}
 
-
-    AddRecipe() {
-    }
-
-} export default DBInterface;
+export default DBInterface;

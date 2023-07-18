@@ -65,7 +65,13 @@ router.post('/api/addrecipe/internal', async (req, res) => {
     } catch (error) {
         // Handle errors
         console.error('Error adding internal recipe:', error);
-        res.status(500).json({ error: 'Failed to add internal recipe' });
+
+        if (error.message === 'Recipe name already exists') {
+            res.status(500).json({ error: 'Recipe name already exists' });
+        }
+        else {
+            res.status(500).json({ error: 'Failed to add internal recipe' });
+        }
     }
 });
 
