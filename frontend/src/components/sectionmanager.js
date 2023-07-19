@@ -1,33 +1,27 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import '../css/myStyle.css';
 import DinnerMenu from "./dinnermenu";
 import MoreRecipes from "./morerecipes";
 import Admin from "./admin";
-import React, { Component } from 'react';
-import DBInterface from './db_interface';
 
-class SectionManager extends Component {
-    constructor(props) {
-        super(props);
-        this.db = new DBInterface();
-    }
-
-    GetSection() {
-        if (this.props.active === 'Middagsmeny') {
-            return <DinnerMenu
-                widthSwitch={this.props.widthSwitch}
-                db={this.db} />;
-
-        } else if (this.props.active === 'Fler recept') {
-            return <MoreRecipes
-                widthSwitch={this.props.widthSwitch}
-                db={this.db} />;
-
+const SectionManager = ({ activeSection, widthSwitch }) => {
+    const renderSection = () => {
+        if (activeSection === 'Middagsmeny') {
+            return <DinnerMenu widthSwitch={widthSwitch} />;
+        } else if (activeSection === 'Fler recept') {
+            return <MoreRecipes widthSwitch={widthSwitch} />;
         } else {
             return <Admin />;
         }
-    }
+    };
 
-    render() {
-        return <div className="content-wrapper flexbox">{this.GetSection()}</div>;
-    }
+    return <div className="content-wrapper flexbox">{renderSection()}</div>;
+};
 
-} export default SectionManager;
+SectionManager.propTypes = {
+    activeSection: PropTypes.string.isRequired,
+    widthSwitch: PropTypes.number.isRequired,
+};
+
+export default SectionManager;

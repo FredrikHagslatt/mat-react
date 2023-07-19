@@ -1,40 +1,46 @@
 import '../css/myStyle.css';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Navbar from './navbar';
 import SectionManager from './sectionmanager';
 import Footer from './footer';
 
-class MainContainer extends Component{
-    constructor(props){
+const WIDTH_SWITCH = 800;
+const sections = [
+    'Middagsmeny',
+    'Fler recept',
+    'Admin',
+];
+
+class MainContainer extends Component {
+    constructor(props) {
         super(props);
         this.state = {
-            sections: [
-                'Middagsmeny',
-                'Fler recept', 
-                'Admin',
-            ],
+
             activeSection: 'Middagsmeny',
             showImages: false,
-            widthSwitch: 800,
         }
     }
 
-    NavbarClick = (name) => {
-        this.setState({activeSection: name})
+    handleNavbarClick = (name) => {
+        this.setState({ activeSection: name })
     }
-    
-    render(){
-        return(            
+
+    render() {
+        const { activeSection, showImages } = this.state;
+
+        return (
             <div className="window-size background-image">
-                    <Navbar
-                        elements={this.state.sections} 
-                        active={this.state.activeSection} 
-                        onClick={this.NavbarClick}/>
-                    <SectionManager 
-                        active={this.state.activeSection}
-                        showImages={this.state.showImages} 
-                        widthSwitch={this.state.widthSwitch}/>
-                    <Footer />
+                <Navbar
+                    sections={sections}
+                    activeSection={activeSection}
+                    onClick={this.handleNavbarClick}
+                />
+                <SectionManager
+                    activeSection={activeSection}
+                    showImages={showImages}
+                    widthSwitch={WIDTH_SWITCH}
+                />
+                <Footer />
             </div>
         );
     };

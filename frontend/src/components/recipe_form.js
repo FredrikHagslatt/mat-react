@@ -99,6 +99,7 @@ const RecipeForm = () => {
 
         try {
             if (type === FormType.External) {
+
                 await DBInterface.addExternalRecipe(name, url);
             } else {
                 await DBInterface.addInternalRecipe(name, description, ingredients);

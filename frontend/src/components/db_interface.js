@@ -1,91 +1,68 @@
 class DBInterface {
-    constructor() {
-        this.dinnerMenu = {};
-        this.moreRecipes = {};
+    static async fetchData(url) {
+        const response = await fetch(url);
+        if (!response.ok) {
+            const data = await response.json();
+            if (data && data.error) {
+                throw new Error(data.error);
+            }
+            throw new Error('Failed to fetch data from the server');
+        }
+        return response.json();
     }
 
+    static async postData(url, body) {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
 
-    GetDinnerMenu() {
-        return (fetch('/api/dinnermenu')
-            .then((response) =>
-                response.json())
-            .then((response) => response.data)
-        );
+        if (!response.ok) {
+            const data = await response.json();
+            if (data && data.error) {
+                throw new Error(data.error);
+            }
+            throw new Error('Failed to add recipe');
+        }
+        return response.json();
     }
 
-
-    GetMoreRecipes() {
-        return (fetch('/api/morerecipes')
-            .then((response) =>
-                response.json())
-            .then((response) => response.data)
-        );
+    static async GetDinnerMenu() {
+        const data = await DBInterface.fetchData('/api/dinnermenu');
+        return data.data;
     }
 
-
-    GetRecipe(id) {
-        return (fetch('/api/recipe',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 'id': id }),
-            })
-            .then((response) =>
-                response.json())
-            .then((response) => response.data)
-        );
+    static async GetMoreRecipes() {
+        const data = await DBInterface.fetchData('/api/morerecipes');
+        return data.data;
     }
 
+    static async GetRecipe(id) {
+        const data = await DBInterface.postData('/api/recipe', { id });
+        return data.data;
+    }
 
     static async addExternalRecipe(name, url) {
         try {
-            const response = await fetch('/api/addrecipe/external', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, url }),
-            });
-
-            const data = await response.json();
-            if (!response.ok) {
-                if (data && data.error) {
-                    throw new Error(data.error);
-                }
-                throw new Error('Failed to add internal recipe');
-            }
-
+            await DBInterface.postData('/api/addrecipe/external', { name, url });
+            console.log('External recipe added successfully!');
         } catch (error) {
             throw error; // Rethrow the error to handle it in the frontend
         }
     }
-
 
     static async addInternalRecipe(name, description, ingredients) {
         try {
-            const response = await fetch('/api/addrecipe/internal', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, description, ingredients }),
-            });
-
-
-            const data = await response.json();
-            if (!response.ok) {
-                if (data && data.error) {
-                    throw new Error(data.error);
-                }
-                throw new Error('Failed to add internal recipe');
-            }
-
+            await DBInterface.postData('/api/addrecipe/internal', { name, description, ingredients });
+            console.log('Internal recipe added successfully!');
         } catch (error) {
             throw error; // Rethrow the error to handle it in the frontend
         }
     }
+
 }
 
 export default DBInterface;

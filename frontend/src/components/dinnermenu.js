@@ -1,6 +1,7 @@
 import '../css/myStyle.css';
 import React, { Component } from 'react';
 import Recipe from './recipe';
+import DBInterface from './db_interface';
 
 class DinnerMenu extends Component {
     constructor(props) {
@@ -18,30 +19,31 @@ class DinnerMenu extends Component {
     }
 
     RenderItem(day, recipe) {
-        if (typeof recipe === 'object') {
-            return <Recipe day={day} recipe={recipe} showImg={true} />
-        } else {
-            return <Recipe day={day} recipe={this.state.loadingRecipe} showImg={true} />
-        }
+        const { loadingRecipe } = this.state;
+        return (
+            <Recipe day={day} recipe={typeof recipe === 'object' ? recipe : loadingRecipe} showImg={true} />
+        );
     }
 
     SetDays() {
         const week = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
-        var today = new Date().getDay();
-        var days = [];
+        const today = new Date().getDay();
+        const days = [];
         for (var i = 0; i < 3; i++) {
             days.push(week[(today + i) % 7]);
         }
         this.setState({ days: days });
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.SetDays();
-        Promise.resolve(this.props.db.GetDinnerMenu())
-            .then((value) => {
-                this.setState({ dinnerMenu: value })
-            })
-
+        try {
+            const dinnerMenu = await DBInterface.GetDinnerMenu();
+            this.setState({ dinnerMenu });
+        } catch (error) {
+            console.error('Error fetching dinner menu:', error);
+            // Handle the error or show an error message to the user
+        }
         window.addEventListener('resize', () => {
             this.setState({
                 isMobile: window.innerWidth < this.props.widthSwitch,
@@ -50,13 +52,15 @@ class DinnerMenu extends Component {
     }
 
     render() {
-        const classes = this.state.isMobile ? 'flexbox dinner-menu mobile' : 'flexbox dinner-menu';
+        const { isMobile, days, dinnerMenu } = this.state;
+        const classes = isMobile ? 'flexbox dinner-menu mobile' : 'flexbox dinner-menu';
         return (
             <div className={classes}>
-                {this.RenderItem(this.state.days[0], this.state.dinnerMenu[0])}
-                {this.RenderItem(this.state.days[1], this.state.dinnerMenu[1])}
-                {this.RenderItem(this.state.days[2], this.state.dinnerMenu[2])}
-
+                {days.map((day, index) => (
+                    <React.Fragment key={index}>
+                        {this.RenderItem(day, dinnerMenu[index])}
+                    </React.Fragment>
+                ))}
             </div>
         );
     }
