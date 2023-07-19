@@ -49,11 +49,14 @@ class DBInterface {
                 body: JSON.stringify({ name, url }),
             });
 
+            const data = await response.json();
             if (!response.ok) {
-                throw new Error('Failed to add external recipe');
+                if (data && data.error) {
+                    throw new Error(data.error);
+                }
+                throw new Error('Failed to add internal recipe');
             }
 
-            const data = await response.json();
         } catch (error) {
             throw error; // Rethrow the error to handle it in the frontend
         }

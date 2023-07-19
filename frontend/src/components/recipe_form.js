@@ -85,19 +85,11 @@ const RecipeForm = () => {
         setDescription(event.target.value);
     };
 
-    /*
-const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-    }
-};
-*/
     const handleKeyDown = (event) => {
-        const { tagName, type, name } = event.target;
-        if (
-            (event.key === 'Enter' && tagName !== 'TEXTAREA' && type !== 'textarea') ||
-            (event.key === 'Enter' && tagName === 'TEXTAREA' && name === 'description')
-        ) {
+        const { tagName, name } = event.target;
+        // Prevent form submission on enter key press
+        // Enter will create new lines in textareas
+        if (event.key === 'Enter' && tagName !== 'TEXTAREA') {
             event.preventDefault();
         }
     };

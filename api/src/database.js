@@ -39,14 +39,20 @@ function getRecipe(id) {
 }
 
 async function addExternalRecipe(name, url) {
+  const selectRecipeSql = 'SELECT id FROM recipes WHERE name = $1';
   const insertRecipeSql = 'INSERT INTO recipes (name, url, type) VALUES ($1, $2, $3)';
 
   try {
+    // Check if the recipe name already exists
+    const existingRecipe = await query(selectRecipeSql, [name]);
+    if (existingRecipe.length > 0) {
+      throw new Error('Recipe name already exists');
+    }
+
     await db.query(insertRecipeSql, [name, url, 'External']);
     console.log('External recipe added successfully!');
   } catch (error) {
-    // console.error('Error adding external recipe:', error);
-    throw new Error('Failed to add external recipe');
+    throw error;
   }
 }
 

@@ -48,9 +48,15 @@ router.post('/api/addrecipe/external', async (req, res) => {
         // Return a success response
         res.status(200).json({ message: 'External recipe added successfully' });
     } catch (error) {
-        console.error('Error adding external recipe:', error);
-        // Return an error response
-        res.status(500).json({ error: 'Failed to add external recipe' });
+        // Handle errors
+        console.error('Error adding internal recipe:', error);
+
+        if (error.message === 'Recipe name already exists') {
+            res.status(500).json({ error: 'Recipe name already exists' });
+        }
+        else {
+            res.status(500).json({ error: 'Failed to add internal recipe' });
+        }
     }
 });
 
