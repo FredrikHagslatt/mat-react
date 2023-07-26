@@ -1,26 +1,31 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import '../css/myStyle.css';
-import React, {Component} from 'react';
 
+const Navbar = ({ sections, activeSection, onClick }) => {
+    const renderNavbarElements = () => {
+        return sections.map((name, index) => (
+            <li
+                key={index}
+                className={name === activeSection ? 'active' : ''}
+                onClick={() => onClick(name)}
+            >
+                {name}
+            </li>
+        ));
+    };
 
-class Navbar extends Component {
+    return (
+        <header className="header-wrapper flexbox">
+            <ul>{renderNavbarElements()}</ul>
+        </header>
+    );
+};
 
-    RenderNavbarElements(){
-        return this.props.elements.map((name, key) =>
-            (name === this.props.active ?
-            <li key={key} className="active" onClick={ () => this.props.onClick(name)} >{name}</li>
-            :<li key={key} onClick={ () => this.props.onClick(name)} >{name}</li>
-            )
-        );
-    }
+Navbar.propTypes = {
+    sections: PropTypes.arrayOf(PropTypes.string).isRequired,
+    activeSection: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+};
 
-    render(){
-        return(
-            <header className="header-wrapper flexbox">
-                <ul>
-                    {this.RenderNavbarElements()}                       
-                </ul>
-            </header>
-        );
-    }
-
-}export default Navbar;
+export default Navbar;

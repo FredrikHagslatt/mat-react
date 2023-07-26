@@ -1,6 +1,6 @@
 import '../css/myStyle.css';
 
-function Footer(props){
+function Footer(props) {
     return (
         <footer className="footer-wrapper">
             <p className="copyleft">COPYLEFT © 2021</p>
@@ -8,4 +8,4 @@ function Footer(props){
         </footer>
     );
 
-}export default Footer;
+} export default Footer;

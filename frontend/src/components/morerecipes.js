@@ -1,6 +1,8 @@
 import '../css/myStyle.css';
 import React, { Component } from 'react';
 import Recipe from './recipe';
+import DBInterface from './db_interface';
+
 
 class MoreRecipes extends Component {
     constructor(props) {
@@ -31,7 +33,7 @@ class MoreRecipes extends Component {
     }
 
     componentDidMount() {
-        Promise.resolve(this.props.db.GetMoreRecipes())
+        Promise.resolve(DBInterface.GetMoreRecipes())
             .then((value) => {
                 this.setState({ recipes: value })
             })
@@ -55,7 +57,7 @@ class MoreRecipes extends Component {
                             checked={this.state.showImg}
                             onChange={this.HandleCheckbox}
                         />
-                        Show Images
+                        Visa bilder
                     </label>
 
                 </div>

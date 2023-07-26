@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
-import Password from "./password";
+import React from 'react';
+import { useAuth } from '../authcontext';
+import Login from "./login";
 import RecipeForm from "./recipe_form";
 
-class Admin extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loggedIn: true,
-        };
-    }
 
-    render() {
-        if (this.state.loggedIn) {
-            return <RecipeForm />;
-        } else {
-            return <Password />;
-        }
-    }
+const Admin = () => {
+    const { loggedIn } = useAuth();
 
-} export default Admin;
+    return (
+        <div>
+            {loggedIn ? (
+                <RecipeForm />
+            ) : (
+                <Login />
+            )}
+        </div>
+    );
+};
+
+export default Admin;

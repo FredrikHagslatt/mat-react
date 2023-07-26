@@ -3,6 +3,7 @@ import '../css/switch.css';
 
 import React, { useState } from 'react';
 import IngredientForm from './ingredient_form';
+import DBInterface from './db_interface';
 
 const FormInput = ({ value, placeholder, onChange }) => {
     return (
@@ -84,16 +85,43 @@ const RecipeForm = () => {
         setDescription(event.target.value);
     };
 
-    const handleSubmit = (event) => {
-        console.log("Name: " + name + ", URL: " + url + ".")
-        console.log("Ingredients" + ingredients + ".")
-        console.log("Description: " + description + ".")
+    const handleKeyDown = (event) => {
+        const { tagName } = event.target;
+        // Prevent form submission on enter key press
+        // Enter will create new lines in textareas
+        if (event.key === 'Enter' && tagName !== 'TEXTAREA') {
+            event.preventDefault();
+        }
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Perform form submission logic here
+
+        try {
+            if (type === FormType.External) {
+
+                await DBInterface.addExternalRecipe(name, url);
+            } else {
+                await DBInterface.addInternalRecipe(name, description, ingredients);
+            }
+
+            // Show a success message to the user if the request is successful
+            alert('Recipe added successfully!');
+        } catch (error) {
+            // Handle the error
+            if (error.message === 'Failed to add external recipe') {
+                alert('Error adding external recipe');
+            } else if (error.message === 'Recipe name already exists') {
+                alert('Recipe name already exists. Please choose a different name.');
+            } else {
+                alert('An unknown error occurred');
+            }
+            console.log(error);
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
             <FormInput
                 placeholder="Name"
                 value={name}

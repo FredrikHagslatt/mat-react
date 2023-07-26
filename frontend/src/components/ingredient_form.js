@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 
 const IngredientForm = ({ onIngredientChange }) => {
-    const [ingredients, setIngredients] = useState([{ Name: '', quantity: '', unit: '' }]);
+    const [ingredients, setIngredients] = useState([{ name: '', quantity: '', unit: '' }]);
     const ingredientNameRefs = useRef([]);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const IngredientForm = ({ onIngredientChange }) => {
     };
 
     const handleAddIngredient = () => {
-        setIngredients([...ingredients, { Name: '', quantity: '', unit: '' }]);
+        setIngredients([...ingredients, { name: '', quantity: '', unit: '' }]);
     };
 
     const handleRemoveIngredient = (index) => {
@@ -45,8 +45,8 @@ const IngredientForm = ({ onIngredientChange }) => {
                 <div key={index}>
                     <input
                         type="text"
-                        name="Name"
-                        value={ingredient.Name}
+                        name="name"
+                        value={ingredient.name}
                         onChange={(e) => handleInputChange(index, e)}
                         placeholder="Ingredient"
                         ref={(element) => (ingredientNameRefs.current[index] = element)}
