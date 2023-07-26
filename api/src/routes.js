@@ -1,5 +1,6 @@
 
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const {
@@ -78,6 +79,18 @@ router.post('/api/addrecipe/internal', async (req, res) => {
         else {
             res.status(500).json({ error: 'Failed to add internal recipe' });
         }
+    }
+});
+
+router.post('/api/login', (req, res) => {
+    const { password } = req.body;
+    const secretKey = 'properly generated secret key';
+    if (password === '1234') {
+        // Generate a JWT token with user information and sign it using the secret key
+        const token = jwt.sign({ username: 'admin' }, secretKey, { expiresIn: '1h' });
+        res.json({ token });
+    } else {
+        res.status(401).json({ error: 'Invalid credentials' });
     }
 });
 

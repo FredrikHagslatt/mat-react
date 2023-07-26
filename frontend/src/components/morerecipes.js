@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Recipe from './recipe';
 import DBInterface from './db_interface';
 
+
 class MoreRecipes extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +57,7 @@ class MoreRecipes extends Component {
                             checked={this.state.showImg}
                             onChange={this.HandleCheckbox}
                         />
-                        Show Images
+                        Visa bilder
                     </label>
 
                 </div>

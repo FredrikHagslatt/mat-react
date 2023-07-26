@@ -86,7 +86,7 @@ const RecipeForm = () => {
     };
 
     const handleKeyDown = (event) => {
-        const { tagName, name } = event.target;
+        const { tagName } = event.target;
         // Prevent form submission on enter key press
         // Enter will create new lines in textareas
         if (event.key === 'Enter' && tagName !== 'TEXTAREA') {
