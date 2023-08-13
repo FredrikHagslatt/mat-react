@@ -1,27 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import '../css/myStyle.css';
+import "../css/general.css";
+
+import React from "react";
+import PropTypes from "prop-types";
+import { Routes, Route } from "react-router-dom";
 import DinnerMenu from "./dinnermenu";
 import MoreRecipes from "./morerecipes";
 import Admin from "./admin";
 
-const SectionManager = ({ activeSection, widthSwitch }) => {
-    const renderSection = () => {
-        if (activeSection === 'Middagsmeny') {
-            return <DinnerMenu widthSwitch={widthSwitch} />;
-        } else if (activeSection === 'Fler recept') {
-            return <MoreRecipes widthSwitch={widthSwitch} />;
-        } else {
-            return <Admin />;
-        }
-    };
-
-    return <div className="content-wrapper flexbox">{renderSection()}</div>;
+const SectionManager = ({ widthSwitch }) => {
+  return (
+    <div className="content-wrapper flexbox">
+      <Routes>
+        <Route path="/" element={<DinnerMenu widthSwitch={widthSwitch} />} />
+        <Route
+          path="/Middagsmeny"
+          element={<DinnerMenu widthSwitch={widthSwitch} />}
+        />
+        <Route
+          path="/Fler-recept"
+          element={<MoreRecipes widthSwitch={widthSwitch} />}
+        />
+        <Route path="/Admin" element={<Admin />} />
+      </Routes>
+    </div>
+  );
 };
 
 SectionManager.propTypes = {
-    activeSection: PropTypes.string.isRequired,
-    widthSwitch: PropTypes.number.isRequired,
+  widthSwitch: PropTypes.number.isRequired,
 };
 
 export default SectionManager;

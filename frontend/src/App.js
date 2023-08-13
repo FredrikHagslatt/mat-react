@@ -1,6 +1,5 @@
-import MainContainer from './components/maincontainer';
+import MainContainer from "./components/maincontainer";
 function App() {
-  return (
-    <MainContainer />
-  );
-} export default App;
+  return <MainContainer />;
+}
+export default App;

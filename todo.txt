@@ -1,0 +1,9 @@
+logging
+regular backups
+regular restoration testing
+
+api, serve static
+frontend, get images from api static
+edit existing recipes
+
+image upload

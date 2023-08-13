@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+  color: azure;
+}
+
+.window-size {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.background-image {
+  background-image: linear-gradient(
+      rgba(200, 80, 0, 0.9),
+      rgba(200, 80, 0, 0.9)
+    ),
+    url("/src/stat_images/doodle.jpg");
+  background-size: contain;
+}
+
+.flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+/*  CONTENT  */
+
+.content-wrapper {
+  height: 100%;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  overflow-x: hidden;
+}
+
+.dinner-menu {
+  padding: 60px 0px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.dinner-menu > .item {
+  width: 250px;
+}
+
+.dinner-menu.mobile {
+  flex-direction: column;
+}
+
+.dinner-menu.mobile > .item {
+  width: 200px;
+  flex-direction: column;
+}
+
+.more-recipes {
+  padding: 60px 0px;
+}
+
+.more-recipes.mobile > .item {
+  width: 100px;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+a.item {
+  border-radius: 2%;
+  text-decoration: none;
+  background-color: rgba(100, 100, 100, 0.8);
+  width: 200px;
+  margin: 20px;
+  padding: 10px;
+  transition: 400ms;
+  cursor: pointer;
+}
+
+a.item:hover {
+  transform: scale(1.1);
+  transition: 400ms;
+}
+
+a.item img {
+  border-radius: 2%;
+  width: 100%;
+}
+
+div.desc {
+  text-align: center;
+  color: white;
+}
+
+input {
+  background-color: rgb(50, 50, 50);
+}
+
+.images-checkbox {
+  display: block;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0px 20px;
+  background-color: #000;
+  width: 100%;
+  z-index: 999;
+}
+
+.copyleft {
+  float: left;
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.copyright {
+  float: right;
+}
+
+.visible-on-background {
+  color: white;
+  font-size: 20px;
+  text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
+}
+
+/*
+.hide-left {
+    visibility: hidden;
+    transition: 400ms;
+    left: -100%
+}
+
+.hide-right {
+    visibility: hidden;
+    transition: 400ms;
+    left: 100%
+}
+*/

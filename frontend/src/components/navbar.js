@@ -1,31 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import '../css/myStyle.css';
+import "../css/general.css";
+import "../css/navbar.css";
 
-const Navbar = ({ sections, activeSection, onClick }) => {
-    const renderNavbarElements = () => {
-        return sections.map((name, index) => (
-            <li
-                key={index}
-                className={name === activeSection ? 'active' : ''}
-                onClick={() => onClick(name)}
-            >
-                {name}
-            </li>
-        ));
-    };
+import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
-    return (
-        <header className="header-wrapper flexbox">
-            <ul>{renderNavbarElements()}</ul>
-        </header>
-    );
+const Navbar = ({ elements }) => {
+  const location = useLocation();
+
+  return (
+    <header className="navbar flexbox">
+      <ul>
+        {elements.map((name, index) => (
+          <li
+            key={index}
+            className={
+              location.pathname.includes(name.replace(/\s/g, "-"))
+                ? "nav-active"
+                : ""
+            }
+          >
+            <NavLink to={`/${name.replace(/\s/g, "-")}`}>{name}</NavLink>
+          </li>
+        ))}
+      </ul>
+    </header>
+  );
 };
 
 Navbar.propTypes = {
-    sections: PropTypes.arrayOf(PropTypes.string).isRequired,
-    activeSection: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
+  elements: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Navbar;

@@ -1,68 +1,71 @@
 class DBInterface {
-    static async fetchData(url) {
-        const response = await fetch(url);
-        if (!response.ok) {
-            const data = await response.json();
-            if (data && data.error) {
-                throw new Error(data.error);
-            }
-            throw new Error('Failed to fetch data from the server');
-        }
-        return response.json();
+  static async fetchData(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      const data = await response.json();
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+      throw new Error("Failed to fetch data from the server");
     }
+    return response.json();
+  }
 
-    static async postData(url, body) {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-        });
+  static async postData(url, body) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
 
-        if (!response.ok) {
-            const data = await response.json();
-            if (data && data.error) {
-                throw new Error(data.error);
-            }
-            throw new Error('Failed to add recipe');
-        }
-        return response.json();
+    if (!response.ok) {
+      const data = await response.json();
+      if (data && data.error) {
+        throw new Error(data.error);
+      }
+      throw new Error("Failed to add recipe");
     }
+    return response.json();
+  }
 
-    static async GetDinnerMenu() {
-        const data = await DBInterface.fetchData('/api/dinnermenu');
-        return data.data;
+  static async GetDinnerMenu() {
+    const data = await DBInterface.fetchData("/api/dinnermenu");
+    return data.data;
+  }
+
+  static async GetMoreRecipes() {
+    const data = await DBInterface.fetchData("/api/morerecipes");
+    return data.data;
+  }
+
+  static async GetRecipe(id) {
+    const data = await DBInterface.postData("/api/recipe", { id });
+    return data.data;
+  }
+
+  static async addExternalRecipe(name, url) {
+    try {
+      await DBInterface.postData("/api/addrecipe/external", { name, url });
+      console.log("External recipe added successfully!");
+    } catch (error) {
+      throw error; // Rethrow the error to handle it in the frontend
     }
+  }
 
-    static async GetMoreRecipes() {
-        const data = await DBInterface.fetchData('/api/morerecipes');
-        return data.data;
+  static async addInternalRecipe(name, description, ingredients) {
+    try {
+      await DBInterface.postData("/api/addrecipe/internal", {
+        name,
+        description,
+        ingredients,
+      });
+      console.log("Internal recipe added successfully!");
+    } catch (error) {
+      throw error; // Rethrow the error to handle it in the frontend
     }
-
-    static async GetRecipe(id) {
-        const data = await DBInterface.postData('/api/recipe', { id });
-        return data.data;
-    }
-
-    static async addExternalRecipe(name, url) {
-        try {
-            await DBInterface.postData('/api/addrecipe/external', { name, url });
-            console.log('External recipe added successfully!');
-        } catch (error) {
-            throw error; // Rethrow the error to handle it in the frontend
-        }
-    }
-
-    static async addInternalRecipe(name, description, ingredients) {
-        try {
-            await DBInterface.postData('/api/addrecipe/internal', { name, description, ingredients });
-            console.log('Internal recipe added successfully!');
-        } catch (error) {
-            throw error; // Rethrow the error to handle it in the frontend
-        }
-    }
-
+  }
 }
 
 export default DBInterface;
