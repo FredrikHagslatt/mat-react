@@ -1,5 +1,5 @@
 function Recipe(props) {
-  if (props.recipe.image === "") {
+  if (props.recipe.image === null) {
     props.recipe.image = "default.jpg";
   }
   if (props.showImg === true) {

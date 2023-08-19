@@ -45,9 +45,26 @@ class DBInterface {
     return data.data;
   }
 
-  static async addExternalRecipe(name, url) {
+  static async addExternalRecipe(name, url, imageFile) {
     try {
-      await DBInterface.postData("/api/addrecipe/external", { name, url });
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("url", url);
+      formData.append("image", imageFile);
+
+      const response = await fetch("/api/addrecipe/external", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        if (data && data.error) {
+          throw new Error(data.error);
+        }
+        throw new Error("Failed to add internal recipe");
+      }
+
       console.log("External recipe added successfully!");
     } catch (error) {
       throw error; // Rethrow the error to handle it in the frontend
@@ -66,14 +83,6 @@ class DBInterface {
         method: "POST",
         body: formData,
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        if (data && data.error) {
-          throw new Error(data.error);
-        }
-        throw new Error("Failed to add internal recipe");
-      }
 
       console.log("Internal recipe added successfully!");
     } catch (error) {

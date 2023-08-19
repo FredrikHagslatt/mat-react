@@ -1,8 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const images_path = "/assets/images/";
-const storageDirectory = path.join(__dirname, "../" + images_path);
+const storageDirectory = path.join(__dirname, "../assets/images/");
 if (!fs.existsSync(storageDirectory)) {
   fs.mkdirSync(storageDirectory);
 }

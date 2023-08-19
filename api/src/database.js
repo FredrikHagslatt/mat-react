@@ -40,10 +40,10 @@ function getRecipe(id) {
   return query(sql, [id]);
 }
 
-async function addExternalRecipe(name, url) {
+async function addExternalRecipe(name, url, image) {
   const selectRecipeSql = "SELECT id FROM recipes WHERE name = $1";
   const insertRecipeSql =
-    "INSERT INTO recipes (name, url, type) VALUES ($1, $2, $3)";
+    "INSERT INTO recipes (name, url, type, image) VALUES ($1, $2, $3, $4)";
 
   try {
     // Check if the recipe name already exists
@@ -52,14 +52,14 @@ async function addExternalRecipe(name, url) {
       throw new Error("Recipe name already exists");
     }
 
-    await db.query(insertRecipeSql, [name, url, "External"]);
+    await db.query(insertRecipeSql, [name, url, "External", image]);
     console.log("External recipe added successfully!");
   } catch (error) {
     throw error;
   }
 }
 
-async function addInternalRecipe(name, description, ingredients, imagePath) {
+async function addInternalRecipe(name, description, ingredients, image) {
   const checkRecipeExistsSql = "SELECT id FROM recipes WHERE name = $1";
   const insertRecipeSql =
     "INSERT INTO recipes (name, description, type, image) VALUES ($1, $2, $3, $4) RETURNING id";
@@ -79,7 +79,7 @@ async function addInternalRecipe(name, description, ingredients, imagePath) {
 
     // Insert the recipe and retrieve the generated ID
     const { id } = (
-      await query(insertRecipeSql, [name, description, "Internal", imagePath])
+      await query(insertRecipeSql, [name, description, "Internal", image])
     )[0];
 
     // Insert the ingredients associated with the recipe

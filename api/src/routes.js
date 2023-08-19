@@ -54,26 +54,30 @@ router.post("/api/upload-image", upload.single("image"), (req, res) => {
     .json({ message: "File uploaded successfully.", imageUrl: publicImageUrl });
 });
 
-router.post("/api/addrecipe/external", async (req, res) => {
-  try {
-    const { name, url } = req.body;
+router.post(
+  "/api/addrecipe/external",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const { name, url } = req.body;
 
-    // Call the addExternalRecipe function
-    await addExternalRecipe(name, url);
+      const image = saveImage(req.file);
+      await addExternalRecipe(name, url, image);
 
-    // Return a success response
-    res.status(200).json({ message: "External recipe added successfully" });
-  } catch (error) {
-    // Handle errors
-    console.error("Error adding internal recipe:", error);
+      // Return a success response
+      res.status(200).json({ message: "External recipe added successfully" });
+    } catch (error) {
+      // Handle errors
+      console.error("Error adding internal recipe:", error);
 
-    if (error.message === "Recipe name already exists") {
-      res.status(500).json({ error: "Recipe name already exists" });
-    } else {
-      res.status(500).json({ error: "Failed to add internal recipe" });
+      if (error.message === "Recipe name already exists") {
+        res.status(500).json({ error: "Recipe name already exists" });
+      } else {
+        res.status(500).json({ error: "Failed to add internal recipe" });
+      }
     }
   }
-});
+);
 
 router.post(
   "/api/addrecipe/internal",
@@ -82,10 +86,9 @@ router.post(
     try {
       const { name, description, ingredients } = req.body;
       const parsedIngredients = JSON.parse(ingredients);
-      // Call the addInternalRecipe function
 
-      const imagePath = saveImage(req.file);
-      await addInternalRecipe(name, description, parsedIngredients, imagePath);
+      const image = saveImage(req.file);
+      await addInternalRecipe(name, description, parsedIngredients, image);
 
       // Respond with a success message
       res.status(200).json({ message: "Internal recipe added successfully!" });

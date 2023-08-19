@@ -3,7 +3,7 @@ CREATE TABLE recipes (
     created_at          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     name                varchar(64) NOT NULL UNIQUE,
-    image               varchar(300) NOT NULL DEFAULT '',
+    image               varchar(300) DEFAULT NULL,
     queue_pos           int NOT NULL DEFAULT 99,
     type    varchar(16) NOT NULL DEFAULT 'Internal',
     description         varchar(1024),
