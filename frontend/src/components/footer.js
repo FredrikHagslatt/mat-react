@@ -1,5 +1,3 @@
-import "../css/general.css";
-
 function Footer(props) {
   return (
     <footer className="footer">

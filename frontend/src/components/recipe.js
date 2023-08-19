@@ -1,5 +1,3 @@
-import "../css/general.css";
-
 function Recipe(props) {
   if (props.recipe.image === "") {
     props.recipe.image = "default.jpg";

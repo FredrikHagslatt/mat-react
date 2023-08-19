@@ -1,7 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const router = express.Router();
+const multer = require("multer");
 
+const router = express.Router();
+const upload = multer({ dest: "uploads/" });
+
+const saveImage = require("./image-saver");
 const {
   getDinnerMenu,
   getMoreRecipes,
@@ -38,6 +42,18 @@ router.post("/api/recipe", async (req, res) => {
   }
 });
 
+router.post("/api/upload-image", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: "No file uploaded." });
+  }
+  const publicImageUrl = saveImage(req.file);
+
+  // Respond with the public image URL
+  res
+    .status(200)
+    .json({ message: "File uploaded successfully.", imageUrl: publicImageUrl });
+});
+
 router.post("/api/addrecipe/external", async (req, res) => {
   try {
     const { name, url } = req.body;
@@ -59,25 +75,32 @@ router.post("/api/addrecipe/external", async (req, res) => {
   }
 });
 
-router.post("/api/addrecipe/internal", async (req, res) => {
-  try {
-    const { name, description, ingredients } = req.body;
-    // Call the addInternalRecipe function
-    await addInternalRecipe(name, description, ingredients);
+router.post(
+  "/api/addrecipe/internal",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const { name, description, ingredients } = req.body;
+      const parsedIngredients = JSON.parse(ingredients);
+      // Call the addInternalRecipe function
 
-    // Respond with a success message
-    res.status(200).json({ message: "Internal recipe added successfully!" });
-  } catch (error) {
-    // Handle errors
-    console.error("Error adding internal recipe:", error);
+      const imagePath = saveImage(req.file);
+      await addInternalRecipe(name, description, parsedIngredients, imagePath);
 
-    if (error.message === "Recipe name already exists") {
-      res.status(500).json({ error: "Recipe name already exists" });
-    } else {
-      res.status(500).json({ error: "Failed to add internal recipe" });
+      // Respond with a success message
+      res.status(200).json({ message: "Internal recipe added successfully!" });
+    } catch (error) {
+      // Handle errors
+      console.error("Error adding internal recipe:", error);
+
+      if (error.message === "Recipe name already exists") {
+        res.status(500).json({ error: "Recipe name already exists" });
+      } else {
+        res.status(500).json({ error: "Failed to add internal recipe" });
+      }
     }
   }
-});
+);
 
 router.post("/api/login", (req, res) => {
   const { password } = req.body;

@@ -1,4 +1,3 @@
-import "../css/general.css";
 import React, { Component } from "react";
 import Recipe from "./recipe";
 import DBInterface from "./db_interface";

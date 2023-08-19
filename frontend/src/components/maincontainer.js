@@ -1,4 +1,3 @@
-import "../css/general.css";
 import React, { Component } from "react";
 import Navbar from "./navbar";
 import SectionManager from "./sectionmanager";

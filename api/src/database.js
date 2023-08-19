@@ -59,10 +59,10 @@ async function addExternalRecipe(name, url) {
   }
 }
 
-async function addInternalRecipe(name, description, ingredients) {
+async function addInternalRecipe(name, description, ingredients, imagePath) {
   const checkRecipeExistsSql = "SELECT id FROM recipes WHERE name = $1";
   const insertRecipeSql =
-    "INSERT INTO recipes (name, description, type) VALUES ($1, $2, $3) RETURNING id";
+    "INSERT INTO recipes (name, description, type, image) VALUES ($1, $2, $3, $4) RETURNING id";
   const insertAssociationSql =
     "INSERT INTO association_table (recipe_id, ingredient_id, quantity, unit) VALUES ($1, $2, $3, $4)";
   const findIngredientSql = "SELECT id FROM ingredients WHERE name = $1";
@@ -79,7 +79,7 @@ async function addInternalRecipe(name, description, ingredients) {
 
     // Insert the recipe and retrieve the generated ID
     const { id } = (
-      await query(insertRecipeSql, [name, description, "Internal"])
+      await query(insertRecipeSql, [name, description, "Internal", imagePath])
     )[0];
 
     // Insert the ingredients associated with the recipe

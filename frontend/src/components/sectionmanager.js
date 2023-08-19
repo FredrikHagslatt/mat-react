@@ -1,5 +1,3 @@
-import "../css/general.css";
-
 import React from "react";
 import PropTypes from "prop-types";
 import { Routes, Route } from "react-router-dom";

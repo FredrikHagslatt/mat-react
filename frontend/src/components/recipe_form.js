@@ -1,10 +1,7 @@
-import "../css/general.css";
-import "../css/switch.css";
-
 import React, { useState } from "react";
 import IngredientForm from "./ingredient_form";
 import DBInterface from "./db_interface";
-//import ImageUpload from './image_upload';
+import ImageUploader from "./image_uploader";
 
 const FormInput = ({ value, placeholder, onChange }) => {
   return (
@@ -14,6 +11,7 @@ const FormInput = ({ value, placeholder, onChange }) => {
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        className="dark"
       />
     </div>
   );
@@ -34,6 +32,7 @@ const TextAreaInput = ({ value, onChange, placeholder }) => {
         value={value}
         onChange={handleTextareaChange}
         placeholder={placeholder}
+        className="dark description-textarea"
         style={{ height: textareaHeight }}
       />
     </div>
@@ -52,7 +51,7 @@ const Switch = ({ checked, onChange, stateDisplay }) => {
   return (
     <label className="switch">
       <input type="checkbox" checked={isChecked} onChange={handleToggle} />
-      <span className="slider"></span>
+      <span className="dark slider"></span>
       <span className="state-text">{stateDisplay}</span>
     </label>
   );
@@ -69,7 +68,7 @@ const RecipeForm = () => {
   const [url, setUrl] = useState("");
   const [ingredients, setIngredients] = useState([]);
   const [description, setDescription] = useState("");
-  //  const [imageUrl, setImageUrl] = useState("");
+  const [image, setImage] = useState(null);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -105,9 +104,14 @@ const RecipeForm = () => {
 
     try {
       if (type === FormType.External) {
-        await DBInterface.addExternalRecipe(name, url);
+        await DBInterface.addExternalRecipe(name, url, image);
       } else {
-        await DBInterface.addInternalRecipe(name, description, ingredients);
+        await DBInterface.addInternalRecipe(
+          name,
+          description,
+          ingredients,
+          image
+        );
       }
 
       // Show a success message to the user if the request is successful
@@ -148,8 +152,10 @@ const RecipeForm = () => {
           placeholder="Description"
           value={description}
           onChange={handleDescriptionChange}
+          className="description-textarea"
         />
       ) : null}
+      <ImageUploader onImageSelected={setImage} />
       <button type="submit">Submit</button>
     </form>
   );

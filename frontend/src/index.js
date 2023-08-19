@@ -1,4 +1,9 @@
-import "./index.css";
+import "./css/general.css";
+import "./css/navbar.css";
+import "./css/footer.css";
+import "./css/switch.css";
+import "./css/form.css";
+
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
