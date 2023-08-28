@@ -24,7 +24,7 @@ async function getMoreRecipes() {
   return query(sql);
 }
 
-function getRecipe(id) {
+async function getRecipe(id) {
   const sql =
     " \
       SELECT \
@@ -38,6 +38,20 @@ function getRecipe(id) {
   ";
 
   return query(sql, [id]);
+}
+
+async function getRecipeByName(name) {
+  const sql =
+    " \
+      SELECT r.*, array_agg(i.name) AS ingredients \
+      FROM recipes r \
+      LEFT JOIN association_table a ON r.id = a.recipe_id \
+      LEFT JOIN ingredients i ON a.ingredient_id = i.id \
+      WHERE r.name = $1 \
+      GROUP BY r.id; \
+    ";
+
+  return query(sql, [name]);
 }
 
 async function addExternalRecipe(name, url, image) {
@@ -120,6 +134,7 @@ module.exports = {
   getDinnerMenu,
   getMoreRecipes,
   getRecipe,
+  getRecipeByName,
   addExternalRecipe,
   addInternalRecipe,
 };

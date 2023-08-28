@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Recipe from "./recipe";
+import RecipePreview from "./recipe_preview";
 import DBInterface from "./db_interface";
 
 class DinnerMenu extends Component {
@@ -20,7 +20,7 @@ class DinnerMenu extends Component {
   RenderItem(day, recipe) {
     const { loadingRecipe } = this.state;
     return (
-      <Recipe
+      <RecipePreview
         day={day}
         recipe={typeof recipe === "object" ? recipe : loadingRecipe}
         showImg={true}

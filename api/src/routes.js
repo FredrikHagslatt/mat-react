@@ -10,6 +10,7 @@ const {
   getDinnerMenu,
   getMoreRecipes,
   getRecipe,
+  getRecipeByName,
   addExternalRecipe,
   addInternalRecipe,
 } = require("./database");
@@ -39,6 +40,19 @@ router.post("/api/recipe", async (req, res) => {
     res.json({ data: recipe });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.post("/api/recipe-by-name", async (req, res) => {
+  const { name } = req.body;
+  console.log(name);
+  try {
+    const recipe = await getRecipeByName(name);
+    console.log(recipe);
+    res.json({ data: recipe });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+    console.log(error.message);
   }
 });
 

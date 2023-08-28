@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import DinnerMenu from "./dinnermenu";
 import MoreRecipes from "./morerecipes";
 import Admin from "./admin";
+import Recipe from "./recipe";
 
 const SectionManager = ({ widthSwitch }) => {
   return (
@@ -19,6 +20,7 @@ const SectionManager = ({ widthSwitch }) => {
           element={<MoreRecipes widthSwitch={widthSwitch} />}
         />
         <Route path="/Admin" element={<Admin />} />
+        <Route path="/recept/:recipeName" element={<Recipe />} />
       </Routes>
     </div>
   );

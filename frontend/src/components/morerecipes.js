@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Recipe from "./recipe";
+import RecipePreview from "./recipe_preview";
 import DBInterface from "./db_interface";
 
 class MoreRecipes extends Component {
@@ -7,7 +7,6 @@ class MoreRecipes extends Component {
     super(props);
     this.state = {
       isMobile: window.innerWidth < props.widthSwitch,
-      showImg: true,
       loadingRecipe: {
         name: "loading recipe",
         image: "",
@@ -15,25 +14,15 @@ class MoreRecipes extends Component {
       },
       recipes: [],
     };
-    this.HandleCheckbox = this.HandleCheckbox.bind(this);
-  }
-
-  HandleCheckbox(event) {
-    this.setState({ showImg: !this.state.showImg });
   }
 
   RenderItems() {
-    return this.state.recipes.map((recipe, key) =>
-      typeof recipe === "object" ? (
-        <Recipe key={key} showImg={this.state.showImg} recipe={recipe} />
-      ) : (
-        <Recipe
-          key={key}
-          showImg={this.state.showImg}
-          recipe={this.state.loadingRecipe}
-        />
-      )
-    );
+    return this.state.recipes.map((recipe, key) => (
+      <RecipePreview
+        key={key}
+        recipe={typeof recipe === "object" ? recipe : this.state.loadingRecipe}
+      />
+    ));
   }
 
   componentDidMount() {
@@ -52,22 +41,15 @@ class MoreRecipes extends Component {
   }
 
   render() {
-    const classes = this.state.isMobile
-      ? "flexbox more-recipes mobile"
-      : "flexbox more-recipes";
     return (
-      <div>
-        <div>
-          <label className="images-checkbox">
-            <input
-              type="checkbox"
-              checked={this.state.showImg}
-              onChange={this.HandleCheckbox}
-            />
-            Visa bilder
-          </label>
-        </div>
-        <div className={classes}>{this.RenderItems()}</div>
+      <div
+        className={
+          this.state.isMobile
+            ? "flexbox more-recipes mobile"
+            : "flexbox more-recipes"
+        }
+      >
+        {this.RenderItems()}
       </div>
     );
   }

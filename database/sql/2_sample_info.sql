@@ -35,7 +35,7 @@ INSERT INTO public.ingredients (name) VALUES ('Dijonsenap');
 
 INSERT INTO public.recipes (id, name, url, image, queue_pos, type) VALUES (31, 'Biff Stroganoff', 'https://www.ica.se/recept/biff-stroganoff-713113/', 'biff_stroganoff.jpg', 14, 'External');
 INSERT INTO public.recipes (id, name, url, queue_pos, type) VALUES (29, 'Paneer masala', 'https://www.arla.se/recept/paneer-masala/', 39, 'External');
-INSERT INTO public.recipes (id, name, queue_pos) VALUES (19, 'Pestopasta', 20);
+INSERT INTO public.recipes (id, name, image, queue_pos) VALUES (19, 'Pestopasta', 'pestopasta.jpg', 20);
 INSERT INTO public.recipes (id, name, queue_pos) VALUES (33, 'Köttbullar med mos', 19);
 INSERT INTO public.recipes (id, name, url, queue_pos, type) VALUES (34, 'Potatis- och purjulöksoppa', 'https://www.ica.se/recept/kramig-potatis-och-purjolokssoppa-716077/?fbclid=IwAR1iAeq9i_hTThumFcRYaDEQAlabl7McopIaJaC6qy3b-3BQGSTe8k0Jl1s', 8, 'External');
 INSERT INTO public.recipes (id, name, url, queue_pos, type) VALUES (38, 'Abbalax', 'https://www.abba.se/products/citronsas/', 24, 'External');
