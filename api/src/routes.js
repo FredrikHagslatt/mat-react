@@ -1,6 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
@@ -14,6 +15,7 @@ const {
   getRecipeByName,
   addExternalRecipe,
   addInternalRecipe,
+  getAdminHash,
 } = require("./database");
 
 router.get("/api/dinner-menu", async (req, res) => {
@@ -128,21 +130,38 @@ router.post(
   }
 );
 
-router.post("/api/login", (req, res) => {
-  const { password } = req.body;
-  const secretKey = "properly generated secret key";
-  if (password === "1234") {
-    // Generate a JWT token with user information and sign it using the secret key
-    const token = jwt.sign({ username: "admin" }, secretKey, {
-      expiresIn: "1h",
+router.post("/api/login", async (req, res) => {
+  try {
+    const { password } = req.body;
+    const [dbResult] = await getAdminHash();
+    const adminHash = dbResult ? dbResult["password_hash"] : null;
+
+    if (adminHash === null) {
+      res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    bcrypt.compare(password, adminHash, (err, result) => {
+      if (err) {
+        throw err;
+      }
+
+      if (result) {
+        const secretKey = "properly generated secret key";
+        const token = jwt.sign({ username: "admin" }, secretKey, {
+          expiresIn: "1h",
+        });
+        res.json({ token });
+      } else {
+        res.status(401).json({ error: "Invalid credentials" });
+      }
     });
-    res.json({ token });
-  } else {
-    res.status(401).json({ error: "Invalid credentials" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-router.get("/api/hc", (req, res) => {
+router.get("/api/hc", async (req, res) => {
   res.json({ status: "Alive" });
 });
 

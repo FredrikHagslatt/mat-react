@@ -29,6 +29,13 @@ CREATE TABLE association_table(
     CONSTRAINT unique_recipe_ingredient_id UNIQUE(recipe_id, ingredient_id)
 );
 
+CREATE TABLE users (
+    id                  serial PRIMARY KEY,
+    created_at          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at          timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    username            varchar(64) NOT NULL UNIQUE,
+    password_hash       CHAR(60)
+);
 
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
@@ -47,3 +54,6 @@ ON ingredients FOR EACH ROW EXECUTE PROCEDURE update_updated_at();
 
 CREATE TRIGGER update_association_table_timestamp BEFORE UPDATE
 ON association_table FOR EACH ROW EXECUTE PROCEDURE update_updated_at();
+
+CREATE TRIGGER update_users_timestamp BEFORE UPDATE
+ON users FOR EACH ROW EXECUTE PROCEDURE update_updated_at();

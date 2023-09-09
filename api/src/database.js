@@ -79,6 +79,11 @@ async function addExternalRecipe(name, url, image) {
   }
 }
 
+async function getAdminHash() {
+  const sql = "SELECT password_hash FROM users WHERE username = 'admin'";
+  return query(sql);
+}
+
 async function addInternalRecipe(name, description, ingredients, image) {
   const checkRecipeExistsSql = "SELECT id FROM recipes WHERE name = $1";
   const insertRecipeSql =
@@ -143,4 +148,5 @@ module.exports = {
   getRecipeByName,
   addExternalRecipe,
   addInternalRecipe,
+  getAdminHash,
 };
