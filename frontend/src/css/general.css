@@ -22,6 +22,11 @@
   background-size: contain;
 }
 
+.backplate {
+  background-color: rgba(100, 100, 100, 0.8);
+  border-radius: 2%;
+}
+
 .flexbox {
   display: flex;
   flex-wrap: wrap;
@@ -70,10 +75,9 @@
   background: transparent;
 }
 
-a.item {
+.item {
   border-radius: 2%;
   text-decoration: none;
-  background-color: rgba(100, 100, 100, 0.8);
   width: 200px;
   margin: 20px;
   padding: 10px;
@@ -81,19 +85,13 @@ a.item {
   cursor: pointer;
 }
 
-a.item:hover {
+.item:hover {
   transform: scale(1.1);
   transition: 400ms;
 }
 
-a.item img {
-  border-radius: 2%;
-  width: 100%;
-}
-
-div.desc {
+.center-text {
   text-align: center;
-  color: white;
 }
 
 .images-checkbox {
@@ -108,16 +106,6 @@ div.desc {
   text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
 }
 
-/*
-.hide-left {
-    visibility: hidden;
-    transition: 400ms;
-    left: -100%
+div.preview-padding {
+  padding-bottom: 20px;
 }
-
-.hide-right {
-    visibility: hidden;
-    transition: 400ms;
-    left: 100%
-}
-*/

@@ -6,7 +6,7 @@ CREATE TABLE recipes (
     image               varchar(300) DEFAULT NULL,
     queue_pos           int NOT NULL DEFAULT 99,
     type    varchar(16) NOT NULL DEFAULT 'Internal',
-    description         varchar(1024),
+    description         text,
     url                 varchar(300)
 );
 

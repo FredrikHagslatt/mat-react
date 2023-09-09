@@ -16,15 +16,6 @@ class MoreRecipes extends Component {
     };
   }
 
-  RenderItems() {
-    return this.state.recipes.map((recipe, key) => (
-      <RecipePreview
-        key={key}
-        recipe={typeof recipe === "object" ? recipe : this.state.loadingRecipe}
-      />
-    ));
-  }
-
   componentDidMount() {
     Promise.resolve(DBInterface.GetMoreRecipes()).then((value) => {
       this.setState({ recipes: value });
@@ -49,7 +40,19 @@ class MoreRecipes extends Component {
             : "flexbox more-recipes"
         }
       >
-        {this.RenderItems()}
+        {this.state.recipes.map((recipe, index) => (
+          <div
+            className="item center-text backplate preview-padding"
+            key={index}
+          >
+            <h3>{recipe.name}</h3>
+            <RecipePreview
+              recipe={
+                typeof recipe === "object" ? recipe : this.state.loadingRecipe
+              }
+            />
+          </div>
+        ))}
       </div>
     );
   }

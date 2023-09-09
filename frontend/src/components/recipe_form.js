@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import IngredientForm from "./ingredient_form";
 import DBInterface from "./db_interface";
 import ImageUploader from "./image_uploader";
@@ -69,8 +69,26 @@ const RecipeForm = () => {
   const [ingredients, setIngredients] = useState([]);
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const [existingNames, setExistingNames] = useState([]);
+  const [nameTaken, setNameTaken] = useState(false);
+
+  useEffect(() => {
+    // Fetch data when the component mounts
+    const fetchData = async () => {
+      try {
+        const names = await DBInterface.GetRecipeNames();
+        setExistingNames(names);
+      } catch (error) {
+        // Handle any errors here
+        console.error("Error fetching existing names:", error);
+      }
+    };
+
+    fetchData(); // Call the fetchData function
+  }, []); // The empty dependency array ensures this effect runs once on mount
 
   const handleNameChange = (event) => {
+    setNameTaken(existingNames.has(event.target.value));
     setName(event.target.value);
   };
 
@@ -102,6 +120,10 @@ const RecipeForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (existingNames.has(name)) {
+      alert("Name already taken!\nRecipe not added.");
+    }
+
     try {
       if (type === FormType.External) {
         await DBInterface.addExternalRecipe(name, url, image);
@@ -132,6 +154,7 @@ const RecipeForm = () => {
   return (
     <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
       <FormInput placeholder="Name" value={name} onChange={handleNameChange} />
+      {nameTaken ? <p className="form-error">Name already taken</p> : null}
 
       <Switch
         checked={type === FormType.External}

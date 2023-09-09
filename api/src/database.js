@@ -15,12 +15,18 @@ async function query(sql, values) {
 
 async function getDinnerMenu() {
   const sql =
-    "SELECT name, queue_pos, url, image FROM recipes WHERE queue_pos < 3 ORDER BY queue_pos DESC";
+    "SELECT name, queue_pos, url, type, image FROM recipes WHERE queue_pos < 3 ORDER BY queue_pos DESC";
   return query(sql);
 }
 
-async function getMoreRecipes() {
-  const sql = "SELECT name, queue_pos, url, image FROM recipes ORDER BY name";
+async function getAllRecipes() {
+  const sql =
+    "SELECT name, queue_pos, url, type, image FROM recipes ORDER BY name";
+  return query(sql);
+}
+
+async function getRecipeNames() {
+  const sql = "SELECT name FROM recipes";
   return query(sql);
 }
 
@@ -43,10 +49,10 @@ async function getRecipe(id) {
 async function getRecipeByName(name) {
   const sql =
     " \
-      SELECT r.*, array_agg(i.name) AS ingredients \
+      SELECT r.*, array_agg(array[i.name, at.quantity::varchar, at.unit]) AS ingredients \
       FROM recipes r \
-      LEFT JOIN association_table a ON r.id = a.recipe_id \
-      LEFT JOIN ingredients i ON a.ingredient_id = i.id \
+      LEFT JOIN association_table at ON r.id = at.recipe_id \
+      LEFT JOIN ingredients i ON at.ingredient_id = i.id \
       WHERE r.name = $1 \
       GROUP BY r.id; \
     ";
@@ -86,7 +92,6 @@ async function addInternalRecipe(name, description, ingredients, image) {
 
     // Check if the recipe name already exists
     const existingRecipe = await query(checkRecipeExistsSql, [name]);
-    console.log(existingRecipe.length);
     if (existingRecipe.length > 0) {
       throw new Error("Recipe name already exists");
     }
@@ -132,7 +137,8 @@ async function addInternalRecipe(name, description, ingredients, image) {
 
 module.exports = {
   getDinnerMenu,
-  getMoreRecipes,
+  getAllRecipes,
+  getRecipeNames,
   getRecipe,
   getRecipeByName,
   addExternalRecipe,

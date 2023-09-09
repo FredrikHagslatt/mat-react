@@ -17,17 +17,6 @@ class DinnerMenu extends Component {
     };
   }
 
-  RenderItem(day, recipe) {
-    const { loadingRecipe } = this.state;
-    return (
-      <RecipePreview
-        day={day}
-        recipe={typeof recipe === "object" ? recipe : loadingRecipe}
-        showImg={true}
-      />
-    );
-  }
-
   SetDays() {
     const week = [
       "Söndag",
@@ -67,16 +56,23 @@ class DinnerMenu extends Component {
   }
 
   render() {
-    const { isMobile, days, dinnerMenu } = this.state;
+    const { isMobile, days, dinnerMenu, loadingRecipe } = this.state;
     const classes = isMobile
       ? "flexbox dinner-menu mobile"
       : "flexbox dinner-menu";
     return (
       <div className={classes}>
-        {days.map((day, index) => (
-          <React.Fragment key={index}>
-            {this.RenderItem(day, dinnerMenu[index])}
-          </React.Fragment>
+        {dinnerMenu.map((recipe, index) => (
+          <div
+            className="item center-text backplate preview-padding"
+            key={index}
+          >
+            <h2>{days[index]}</h2>
+            <h3>{recipe.name}</h3>
+            <RecipePreview
+              recipe={typeof recipe === "object" ? recipe : loadingRecipe}
+            />
+          </div>
         ))}
       </div>
     );

@@ -31,13 +31,19 @@ class DBInterface {
   }
 
   static async GetDinnerMenu() {
-    const data = await DBInterface.fetchData("/api/dinnermenu");
+    const data = await DBInterface.fetchData("/api/dinner-menu");
     return data.data;
   }
 
   static async GetMoreRecipes() {
-    const data = await DBInterface.fetchData("/api/morerecipes");
+    const data = await DBInterface.fetchData("/api/more-recipes");
     return data.data;
+  }
+
+  static async GetRecipeNames() {
+    const data = await DBInterface.fetchData("/api/recipe-names");
+    const names = new Set(data.data.map((item) => item.name));
+    return names;
   }
 
   static async GetRecipe(id) {
@@ -57,7 +63,7 @@ class DBInterface {
       formData.append("url", url);
       formData.append("image", imageFile);
 
-      await fetch("/api/addrecipe/external", {
+      await fetch("/api/add-recipe/external", {
         method: "POST",
         body: formData,
       });
@@ -76,7 +82,7 @@ class DBInterface {
       formData.append("ingredients", JSON.stringify(ingredients));
       formData.append("image", imageFile);
 
-      await fetch("/api/addrecipe/internal", {
+      await fetch("/api/add-recipe/internal", {
         method: "POST",
         body: formData,
       });

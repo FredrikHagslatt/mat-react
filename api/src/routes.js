@@ -8,14 +8,15 @@ const upload = multer({ dest: "uploads/" });
 const saveImage = require("./image-saver");
 const {
   getDinnerMenu,
-  getMoreRecipes,
+  getAllRecipes,
+  getRecipeNames,
   getRecipe,
   getRecipeByName,
   addExternalRecipe,
   addInternalRecipe,
 } = require("./database");
 
-router.get("/api/dinnermenu", async (req, res) => {
+router.get("/api/dinner-menu", async (req, res) => {
   try {
     const dinnerMenu = await getDinnerMenu();
     res.json({ data: dinnerMenu });
@@ -24,9 +25,18 @@ router.get("/api/dinnermenu", async (req, res) => {
   }
 });
 
-router.get("/api/morerecipes", async (req, res) => {
+router.get("/api/more-recipes", async (req, res) => {
   try {
-    const recipes = await getMoreRecipes();
+    const recipes = await getAllRecipes();
+    res.json({ data: recipes });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/api/recipe-names", async (req, res) => {
+  try {
+    const recipes = await getRecipeNames();
     res.json({ data: recipes });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -48,7 +58,6 @@ router.post("/api/recipe-by-name", async (req, res) => {
   console.log(name);
   try {
     const recipe = await getRecipeByName(name);
-    console.log(recipe);
     res.json({ data: recipe });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -69,7 +78,7 @@ router.post("/api/upload-image", upload.single("image"), (req, res) => {
 });
 
 router.post(
-  "/api/addrecipe/external",
+  "/api/add-recipe/external",
   upload.single("image"),
   async (req, res) => {
     try {
@@ -94,7 +103,7 @@ router.post(
 );
 
 router.post(
-  "/api/addrecipe/internal",
+  "/api/add-recipe/internal",
   upload.single("image"),
   async (req, res) => {
     try {

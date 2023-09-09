@@ -1,0 +1,15 @@
+div.recipe {
+  border-radius: 2%;
+  text-decoration: none;
+  background-color: rgba(100, 100, 100, 0.8);
+  width: 200px;
+  margin: 20px;
+  padding: 10px;
+  transition: 400ms;
+  cursor: pointer;
+}
+
+div.recipe img {
+  border-radius: 2%;
+  width: 100%;
+}

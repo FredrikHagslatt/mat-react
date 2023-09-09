@@ -3,6 +3,7 @@ import "./css/navbar.css";
 import "./css/footer.css";
 import "./css/switch.css";
 import "./css/form.css";
+import "./css/recipe.css";
 
 import React from "react";
 import ReactDOM from "react-dom";
