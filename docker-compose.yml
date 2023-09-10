@@ -28,6 +28,7 @@ services:
       - .env
     volumes:
       - mat-api-assets:/app/assets
+      - "${LOG_DIR}/api:/app/logs"
 
   database:
     build: "${POSTGRES_DIR}"
