@@ -13,8 +13,6 @@ services:
       - REACT_APP_API_URL=${API_CONTAINER}:3001
     env_file:
       - .env
-    volumes:
-      - "${LOG_DIR}/mat-front-react:/var/log/mat"
 
   api:
     build: "${API_DIR}"

@@ -16,7 +16,6 @@ services:
     env_file:
       - .env
     volumes:
-      - "${LOG_DIR}/mat-front-react:/app/logs"
       - "./frontend/src/:/app/src"
       - "./frontend/public/:/app/public"
 
