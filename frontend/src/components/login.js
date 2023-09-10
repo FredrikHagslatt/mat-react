@@ -36,7 +36,7 @@ const Login = () => {
       setLoggedIn(true);
     } catch (error) {
       // Handle login error
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.message);
     }
   };
 

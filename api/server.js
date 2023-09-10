@@ -13,4 +13,4 @@ app.use("/assets", express.static(path.join(__dirname, "assets")));
 const PORT = 3001;
 app.listen(PORT, () => logger.info("Server is up!!"));
 logger.info("Running on http://localhost:" + PORT);
-logger.error("NOT AN ACTUAL ERROR: Created error log.");
+logger.error("NOT AN ACTUAL ERROR: Restarted API.");
