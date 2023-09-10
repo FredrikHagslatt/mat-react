@@ -1,4 +1,7 @@
 require("dotenv").config();
+
+const logger = require("./logger");
+
 const { Pool } = require("pg");
 const db = new Pool();
 
@@ -73,7 +76,7 @@ async function addExternalRecipe(name, url, image) {
     }
 
     await db.query(insertRecipeSql, [name, url, "External", image]);
-    console.log("External recipe added successfully!");
+    logger.info("External recipe added successfully!");
   } catch (error) {
     throw error;
   }
@@ -134,7 +137,7 @@ async function addInternalRecipe(name, description, ingredients, image) {
     }
 
     await query("COMMIT");
-    console.log("Internal recipe added successfully!");
+    logger.info("Internal recipe added successfully!");
   } catch (error) {
     throw error;
   }

@@ -57,13 +57,13 @@ router.post("/api/recipe", async (req, res) => {
 
 router.post("/api/recipe-by-name", async (req, res) => {
   const { name } = req.body;
-  console.log(name);
+  logger.info(name);
   try {
     const recipe = await getRecipeByName(name);
     res.json({ data: recipe });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
-    console.log(error.message);
+    logger.info(error.message);
   }
 });
 
@@ -93,7 +93,7 @@ router.post(
       res.status(200).json({ message: "External recipe added successfully" });
     } catch (error) {
       // Handle errors
-      console.error("Error adding internal recipe:", error);
+      logger.error("Error adding internal recipe:", error);
 
       if (error.message === "Recipe name already exists") {
         res.status(500).json({ error: "Recipe name already exists" });
@@ -119,7 +119,7 @@ router.post(
       res.status(200).json({ message: "Internal recipe added successfully!" });
     } catch (error) {
       // Handle errors
-      console.error("Error adding internal recipe:", error);
+      logger.error("Error adding internal recipe:", error);
 
       if (error.message === "Recipe name already exists") {
         res.status(500).json({ error: "Recipe name already exists" });
@@ -156,7 +156,7 @@ router.post("/api/login", async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     res.status(500).send("Internal Server Error");
   }
 });
