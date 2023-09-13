@@ -7,8 +7,6 @@ if (!fs.existsSync(storageDirectory)) {
 }
 
 function saveImage(imageFile) {
-  // Generate a unique filename
-
   if (!imageFile) {
     return null;
   }
@@ -16,7 +14,8 @@ function saveImage(imageFile) {
 
   // Move the uploaded file to the storage directory
   const storagePath = path.join(storageDirectory, uniqueFilename);
-  fs.renameSync(imageFile.path, storagePath);
+  fs.copyFileSync(imageFile.path, storagePath);
+  fs.unlinkSync(imageFile.path);
 
   return uniqueFilename;
 }

@@ -24,7 +24,7 @@ router.get("/api/dinner-menu", async (req, res) => {
     const dinnerMenu = await getDinnerMenu();
     res.json({ data: dinnerMenu });
   } catch (error) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -34,7 +34,7 @@ router.get("/api/more-recipes", async (req, res) => {
     const recipes = await getAllRecipes();
     res.json({ data: recipes });
   } catch (error) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -44,7 +44,7 @@ router.get("/api/recipe-names", async (req, res) => {
     const recipes = await getRecipeNames();
     res.json({ data: recipes });
   } catch (error) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -55,7 +55,7 @@ router.post("/api/recipe", async (req, res) => {
     const recipe = await getRecipe(id);
     res.json({ data: recipe });
   } catch (error) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -67,7 +67,7 @@ router.post("/api/recipe-by-name", async (req, res) => {
     const recipe = await getRecipeByName(name);
     res.json({ data: recipe });
   } catch (error) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
@@ -98,7 +98,7 @@ router.post(
       res.status(200).json({ message: "External recipe added successfully" });
     } catch (error) {
       // Handle errors
-      logger.error("Error adding internal recipe:", error.message);
+      logger.error("Error adding external recipe:", error);
 
       if (error.message === "Recipe name already exists") {
         res.status(500).json({ error: "Recipe name already exists" });
@@ -124,7 +124,7 @@ router.post(
       res.status(200).json({ message: "Internal recipe added successfully!" });
     } catch (error) {
       // Handle errors
-      logger.error("Error adding internal recipe:", error.message);
+      logger.error("Error adding internal recipe:", error);
 
       if (error.message === "Recipe name already exists") {
         res.status(500).json({ error: "Recipe name already exists" });
@@ -148,7 +148,7 @@ router.post("/api/login", async (req, res) => {
     bcrypt.compare(password, adminHash, (err, result) => {
       if (err) {
         logger.error(err);
-        throw err;
+        res.status(500).send("Internal Server Error");
       }
 
       if (result) {
@@ -162,7 +162,7 @@ router.post("/api/login", async (req, res) => {
       }
     });
   } catch (error) {
-    logger.error(error.message);
+    logger.error(error);
     res.status(500).send("Internal Server Error");
   }
 });

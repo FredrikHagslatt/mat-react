@@ -25,7 +25,7 @@ services:
     env_file:
       - .env
     volumes:
-      - mat-api-assets:/app/assets
+      - ./api/assets:/app/assets
       - "${LOG_DIR}/api:/app/logs"
 
   database:
