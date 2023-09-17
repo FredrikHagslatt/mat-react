@@ -46,7 +46,7 @@ services:
     env_file:
       - .env
     volumes:
-      - "./database/dbfiles:/var/lib/postgresql/data"
+      - "./database/dev-dbfiles:/var/lib/postgresql/data"
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.rotate-dishes.schedule: "0 0 0 * * *" # Run every midnight
