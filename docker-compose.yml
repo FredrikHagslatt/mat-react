@@ -40,6 +40,8 @@ services:
       ofelia.enabled: "true"
       ofelia.job-exec.rotate-dishes.schedule: "0 0 0 * * *" # Run every midnight
       ofelia.job-exec.rotate-dishes.command: "./scripts/rotate_dishes.sh"
+    volumes:
+      - "./database/dbfile:/var/lib/postgresql/data"
 
   scheduler:
     image: mcuadros/ofelia:latest
@@ -57,6 +59,3 @@ networks:
   backnet:
     driver: bridge
     name: "${BACK_NET}"
-
-volumes:
-  mat-api-assets:

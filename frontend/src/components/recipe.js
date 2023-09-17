@@ -14,7 +14,6 @@ function Recipe() {
     async function fetchRecipe() {
       try {
         const data = await DBInterface.GetRecipeByName(recipeName);
-        console.log(data);
 
         setImage(data.image);
         setIngredients(data.ingredients);
