@@ -37,7 +37,9 @@ services:
       - "${DEV_LOG_DIR}/api:/app/logs"
 
   database:
-    build: "${POSTGRES_DIR}"
+    build:
+      context: "${POSTGRES_DIR}"
+      dockerfile: Dockerfile.dev
     image: "${POSTGRES_IMAGE}"
     restart: unless-stopped
     container_name: "${POSTGRES_CONTAINER}"
